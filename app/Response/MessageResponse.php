@@ -18,7 +18,7 @@ final class MessageResponse implements Responsable
         private readonly array $data,
         private readonly int $status = 200,
         private readonly bool $success = false,
-        private readonly string $message = 'Requsst completed succesfully',
+        private readonly string $message = 'Request completed succesfully',
     ) {
     }
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Response\MessageResponse;
 use App\Services\Auth\AuthService;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\Auth\LoginResource;
+use App\Http\Resources\Admin\AdminUserResource;
 
 final class LoginController
 {
@@ -20,7 +20,7 @@ final class LoginController
         $token = $this->auhService->createAccessToken($user);
 
         return new MessageResponse(
-            data: ['bearerToken' => $token] + LoginResource::loginData($user),
+            data: ['bearerToken' => $token] + AdminUserResource::loginData($user),
             success: true,
             message: 'Login successful',
         );

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -23,3 +24,13 @@ Route::post('/login', LoginController::class)
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::controller(AdminController::class)
+    ->middleware('auth:sanctum')
+    ->prefix('admins')
+    ->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{admin}', 'show');
+        Route::post('/', 'create');
+        Route::delete('/{admin}', 'destroy');
+    });
