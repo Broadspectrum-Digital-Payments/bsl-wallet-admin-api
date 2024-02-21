@@ -24,7 +24,7 @@ final readonly class UpdateAdminPayload
         if (is_string($this->status)) $data['status'] = AdminStatus::tryFrom($this->status);
         if (is_null($data['status'])) unset($data['status']);
 
-        unset($data['id']);
+        unset($data['external_id']);
 
         return $data;
     }

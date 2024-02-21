@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('external_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('status')->default(AdminStatus::ACTIVE);

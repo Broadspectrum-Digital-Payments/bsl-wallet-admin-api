@@ -13,7 +13,7 @@ final class UpdateAdminAction
 {
     public function handle(UpdateAdminPayload $payload)
     {
-        $user = User::where('id', $payload->id)->firstOrFail();
+        $user = User::where('external_id', $payload->id)->firstOrFail();
 
         $isOk = $user->update($payload->toArray());
         $user = $user->refresh();
