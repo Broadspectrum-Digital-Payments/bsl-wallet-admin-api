@@ -32,5 +32,6 @@ Route::controller(AdminController::class)
         Route::get('/', 'index');
         Route::get('/{admin}', 'show');
         Route::post('/', 'create');
+        Route::put('/', 'update');
         Route::delete('/{admin}', 'destroy');
     });

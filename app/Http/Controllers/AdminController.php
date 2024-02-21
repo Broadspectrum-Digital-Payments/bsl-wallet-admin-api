@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Response\MessageResponse;
 use App\Actions\CreateAdminAction;
+use App\Actions\UpdateAdminAction;
 use App\Http\Resources\Admin\AdminResource;
 use App\Http\Requests\Admin\CreateAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminUserResource;
 
 class AdminController extends Controller
@@ -29,6 +30,11 @@ class AdminController extends Controller
     public function show(User $admin)
     {
         return new MessageResponse(AdminUserResource::loginData($admin), success: true);
+    }
+
+    public function update(UpdateAdminRequest $request, UpdateAdminAction $action)
+    {
+        return $action->handle($request->payload());
     }
 
     public function destroy(User $admin)
