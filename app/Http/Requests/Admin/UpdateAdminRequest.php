@@ -20,7 +20,6 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'externalId' => ['required', 'string'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
             'status' => ['nullable', 'string', Rule::enum(AdminStatus::class)],
@@ -33,7 +32,6 @@ class UpdateAdminRequest extends FormRequest
         $validated = parent::validated();
 
         return new UpdateAdminPayload(
-            id: $validated['externalId'],
             name: $validated['name'],
             email: $validated['email'],
             status: $validated['status'] ?? null,

@@ -32,6 +32,6 @@ Route::controller(AdminController::class)
         Route::get('/', 'index');
         Route::get('/{externalId}', 'show');
         Route::post('/', 'create');
-        Route::put('/', 'update');
+        Route::put('/{externalId}', 'update');
         Route::delete('/{externalId}', 'destroy');
     });

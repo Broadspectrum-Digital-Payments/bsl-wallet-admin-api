@@ -41,9 +41,9 @@ class AdminController extends Controller
         return Safenet::run(fn () => MessageResponse::success(AdminUserResource::loginData($externalId)));
     }
 
-    public function update(UpdateAdminRequest $request, UpdateAdminAction $action)
+    public function update(UpdateAdminRequest $request, UpdateAdminAction $action, User $externalId)
     {
-        return Safenet::run(fn () => $action->handle($request->payload()));
+        return Safenet::run(fn () => $action->handle($externalId, $request->payload()));
     }
 
     public function destroy(User $externalId)

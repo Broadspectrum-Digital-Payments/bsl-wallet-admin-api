@@ -11,10 +11,8 @@ use App\Http\Resources\Admin\AdminUserResource;
 
 final class UpdateAdminAction
 {
-    public function handle(UpdateAdminPayload $payload)
+    public function handle(User $user, UpdateAdminPayload $payload)
     {
-        $user = User::where('external_id', $payload->id)->firstOrFail();
-
         $isOk = $user->update($payload->toArray());
         $user = $user->refresh();
 

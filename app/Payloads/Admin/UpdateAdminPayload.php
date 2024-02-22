@@ -13,7 +13,6 @@ final readonly class UpdateAdminPayload
     use KeyTransformer;
 
     public function __construct(
-        public int|string $id,
         public string $name,
         public string $email,
         public null|string|AdminStatus $status,
@@ -29,8 +28,6 @@ final readonly class UpdateAdminPayload
         if (is_null($data['status'])) unset($data['status']);
         if (is_string($this->userType)) $data['userType'] = AdminStatus::tryFrom($this->status);
         if (is_null($data['userType'])) unset($data['userType']);
-
-        unset($data['id']);
 
         return $this->toSnakeCase($data);
     }
