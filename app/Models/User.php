@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Carbon\Carbon;
+use App\Enums\UserType;
 use App\Traits\Auditable;
 use App\Enums\AdminStatus;
 use Laravel\Sanctum\HasApiTokens;
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'status',
+        'user_type',
         'password',
     ];
 
@@ -48,7 +50,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'status' => AdminStatus::class
+        'status' => AdminStatus::class,
+        'user_type' => UserType::class,
     ];
 
     public function getRouteKeyName(): string

@@ -23,7 +23,7 @@ final class CreateAdminAction
         );
 
         return new MessageResponse(
-            AdminUserResource::loginData($user),
+            AdminUserResource::loginData($user->refresh()),
             status: 201,
             success: true,
             message: 'Admin Created Successfully'

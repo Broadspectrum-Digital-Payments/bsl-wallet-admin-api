@@ -21,18 +21,18 @@ final class MessageResponse implements Responsable
     {
         return static::buildResponse(
             [
-                'success' => $this->success,
-                'message' => $this->message,
                 'data' => $this->data
             ],
-            status: $this->status
+            status: $this->status,
+            success: $this->success,
+            message: $this->message
         );
     }
 
     public static function success(
         array $data = [],
         int $status = 200,
-        bool $success = false,
+        bool $success = true,
         string $message = 'Request completed succesfully'
     ) {
         return new static($data, $status, $success, $message);
