@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Response;
 
-use App\Enums\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Support\Responsable;
 
 final class MessageResponse implements Responsable
 {
-    /**
-     * @param array{message:string} $data
-     * @param Status $status
-     */
     public function __construct(
         private readonly array $data,
         private readonly int $status = 200,
@@ -22,10 +17,6 @@ final class MessageResponse implements Responsable
     ) {
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function toResponse($request): JsonResponse
     {
         return static::buildResponse(
@@ -38,6 +29,23 @@ final class MessageResponse implements Responsable
         );
     }
 
+    public static function success(
+        array $data = [],
+        int $status = 200,
+        bool $success = false,
+        string $message = 'Request completed succesfully'
+    ) {
+        return new static($data, $status, $success, $message);
+    }
+
+    public static function error(
+        int $status = 500,
+        bool $success = false,
+        string $message = 'Operation failed',
+    ) {
+        return static::buildResponse([], $status, $success, $message);
+    }
+
     public static function paginated(
         $data,
         int $status = 200,
@@ -47,16 +55,22 @@ final class MessageResponse implements Responsable
         $responseData = $data->response()->getData();
 
         return static::buildResponse([
-            'success' => $success,
-            'message' => $message,
             'data' => $data,
             'links' => $responseData?->links,
             'meta' => $responseData?->meta,
-        ], $status);
+        ], $status, $success, $message);
     }
 
-    private static function buildResponse($data, $status, array $headers = [])
-    {
-        return new JsonResponse($data, $status, $headers);
+    private static function buildResponse(
+        $data,
+        $status,
+        bool $success = false,
+        string $message = 'Request completed succesfully',
+        array $headers = []
+    ) {
+        return new JsonResponse([
+            'success' => $success,
+            'message' => $message,
+        ] + $data, $status, $headers);
     }
 }
