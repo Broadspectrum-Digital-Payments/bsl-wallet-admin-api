@@ -30,8 +30,8 @@ Route::controller(AdminController::class)
     ->prefix('admins')
     ->group(function () {
         Route::get('/', 'index');
-        Route::get('/{admin}', 'show');
+        Route::get('/{externalId}', 'show');
         Route::post('/', 'create');
         Route::put('/', 'update');
-        Route::delete('/{admin}', 'destroy');
+        Route::delete('/{externalId}', 'destroy');
     });

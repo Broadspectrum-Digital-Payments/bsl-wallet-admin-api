@@ -25,7 +25,7 @@ class AdminUserResource extends JsonResource
     public function toLoginData(): array
     {
         return [
-            'enternalId' => $this->external_id,
+            'externalId' => $this->external_id,
             'name' => $this->name,
             'email' => $this->email,
             'status' => $this->status,

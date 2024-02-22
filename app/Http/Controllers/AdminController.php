@@ -36,9 +36,9 @@ class AdminController extends Controller
         return Safenet::run(fn () => $action->handle($request));
     }
 
-    public function show(User $admin)
+    public function show(User $externalId)
     {
-        return Safenet::run(fn () => MessageResponse::success(AdminUserResource::loginData($admin)));
+        return Safenet::run(fn () => MessageResponse::success(AdminUserResource::loginData($externalId)));
     }
 
     public function update(UpdateAdminRequest $request, UpdateAdminAction $action)
@@ -46,12 +46,12 @@ class AdminController extends Controller
         return Safenet::run(fn () => $action->handle($request->payload()));
     }
 
-    public function destroy(User $admin)
+    public function destroy(User $externalId)
     {
-        return Safenet::run(function () use ($admin) {
-            $admin = $admin->delete();
+        return Safenet::run(function () use ($externalId) {
+            $externalId = $externalId->delete();
 
-            return MessageResponse::success(success: $admin ?? false);
+            return MessageResponse::success(success: $externalId ?? false);
         });
     }
 }
