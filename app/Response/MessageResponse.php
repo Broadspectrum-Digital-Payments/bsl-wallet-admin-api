@@ -28,14 +28,35 @@ final class MessageResponse implements Responsable
      */
     public function toResponse($request): JsonResponse
     {
-        return new JsonResponse(
-            data: [
+        return static::buildResponse(
+            [
                 'success' => $this->success,
                 'message' => $this->message,
-                'data' => $this->data,
+                'data' => $this->data
             ],
-            status: $this->status,
-            headers: [],
+            status: $this->status
         );
+    }
+
+    public static function paginated(
+        $data,
+        int $status = 200,
+        bool $success = false,
+        string $message = 'Request completed succesfully',
+    ) {
+        $responseData = $data->response()->getData();
+
+        return static::buildResponse([
+            'success' => $success,
+            'message' => $message,
+            'data' => $data,
+            'links' => $responseData?->links,
+            'meta' => $responseData?->meta,
+        ], $status);
+    }
+
+    private static function buildResponse($data, $status, array $headers = [])
+    {
+        return new JsonResponse($data, $status, $headers);
     }
 }

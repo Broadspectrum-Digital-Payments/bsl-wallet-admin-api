@@ -25,11 +25,12 @@ class AdminUserResource extends JsonResource
     public function toLoginData(): array
     {
         return [
+            'enternalId' => $this->external_id,
             'name' => $this->name,
             'email' => $this->email,
             'status' => $this->status,
-            'created_by' => $this->created_by,
-            'created_at' => $this->created_at
+            'createdBy' => $this->created_by,
+            'createdAt' => $this->created_at
         ];
     }
 }

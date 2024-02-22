@@ -17,9 +17,12 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = User::all();
+        $admins = User::paginate(15);
 
-        return AdminResource::collection($admins);
+        return MessageResponse::paginated(
+            AdminResource::collection($admins),
+            success: true
+        );
     }
 
     public function create(CreateAdminRequest $request, CreateAdminAction $action)

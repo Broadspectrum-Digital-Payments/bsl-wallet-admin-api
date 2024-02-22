@@ -3,10 +3,12 @@
 namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Request;
+use App\Traits\KeyTransformer;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminResource extends JsonResource
 {
+    use KeyTransformer;
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +16,9 @@ class AdminResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        unset($data['id']);
+
+        return $this->toCamelCase($data);
     }
 }
