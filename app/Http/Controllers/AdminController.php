@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Handlers\Safenet;
+use Illuminate\Http\Request;
 use App\Response\MessageResponse;
 use App\Actions\CreateAdminAction;
 use App\Actions\UpdateAdminAction;
@@ -15,35 +17,41 @@ use App\Http\Resources\Admin\AdminUserResource;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $admins = User::paginate(15);
+        return Safenet::run(function () use ($request) {
+            $perPage = $request?->perPage ?? 10;
 
-        return MessageResponse::paginated(
-            AdminResource::collection($admins),
-            success: true
-        );
+            $admins = User::paginate($perPage);
+
+            return MessageResponse::paginated(
+                AdminResource::collection($admins),
+                success: true
+            );
+        });
     }
 
     public function create(CreateAdminRequest $request, CreateAdminAction $action)
     {
-        return $action->handle($request);
+        return Safenet::run(fn () => $action->handle($request));
     }
 
     public function show(User $admin)
     {
-        return new MessageResponse(AdminUserResource::loginData($admin), success: true);
+        return Safenet::run(fn () => MessageResponse::success(AdminUserResource::loginData($admin)));
     }
 
     public function update(UpdateAdminRequest $request, UpdateAdminAction $action)
     {
-        return $action->handle($request->payload());
+        return Safenet::run(fn () => $action->handle($request->payload()));
     }
 
     public function destroy(User $admin)
     {
-        $admin = $admin->delete();
+        return Safenet::run(function () use ($admin) {
+            $admin = $admin->delete();
 
-        return new MessageResponse([], success: $admin ?? false);
+            return MessageResponse::success(success: $admin ?? false);
+        });
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserType;
 use App\Enums\AdminStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('status')->default(AdminStatus::ACTIVE);
+            $table->string('user_type')->default(UserType::ADMIN);
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamp('email_verified_at')->nullable();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\UserType;
 use App\Enums\AdminStatus;
 use Illuminate\Validation\Rule;
 use App\Payloads\Admin\UpdateAdminPayload;
@@ -19,10 +20,11 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'external_id' => ['required', 'string'],
+            'externalId' => ['required', 'string'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
             'status' => ['nullable', 'string', Rule::enum(AdminStatus::class)],
+            'userType' => ['nullable', 'string', Rule::enum(UserType::class)],
         ];
     }
 
@@ -31,10 +33,11 @@ class UpdateAdminRequest extends FormRequest
         $validated = parent::validated();
 
         return new UpdateAdminPayload(
-            id: $validated['external_id'],
+            id: $validated['externalId'],
             name: $validated['name'],
             email: $validated['email'],
-            status: $validated['status'] ?? null
+            status: $validated['status'] ?? null,
+            userType: $validated['userType'] ?? null
         );
     }
 }
