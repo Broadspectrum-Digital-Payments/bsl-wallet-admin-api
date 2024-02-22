@@ -14,7 +14,7 @@ trait HasExternalId
         $model = $model instanceof Model ? $model : new $model;
 
         do {
-            $externalId = strtolower((string) Str::ulid());
+            $externalId = strtolower((string) Str::uuid());
         } while ($model::where($field, $externalId)->exists());
 
         return $externalId;
