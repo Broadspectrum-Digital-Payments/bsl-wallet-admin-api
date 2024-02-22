@@ -38,7 +38,7 @@ class AdminController extends Controller
 
     public function show(User $admin)
     {
-        return Safenet::run(fn () => new MessageResponse(AdminUserResource::loginData($admin), success: true));
+        return Safenet::run(fn () => MessageResponse::success(AdminUserResource::loginData($admin)));
     }
 
     public function update(UpdateAdminRequest $request, UpdateAdminAction $action)
