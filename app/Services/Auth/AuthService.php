@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Services\Auth;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Eloquent\Builder;
+use App\Mail\SendNewAdminPasswordResetLink;
 
 final readonly class AuthService
 {
@@ -22,8 +25,18 @@ final readonly class AuthService
         );
     }
 
-    public function createAccessToken(User $user, string $name = 'admin_login'): string
+    public function getUserByEmail(string $email): Model|Builder
     {
-        return $user->createToken($name)->plainTextToken;
+        return User::query()->where('email', $email)->firstOrFail();
+    }
+
+    public function createAccessToken(User $user, string $name = 'admin_login'): array
+    {
+        return ['bearerToken' => $user->createToken($name)->plainTextToken];
+    }
+
+    public function sendNewAdminPasswordResetLink(User $user, string $token)
+    {
+        Mail::to($user->email)->queue(new SendNewAdminPasswordResetLink($user, $token));
     }
 }

@@ -14,10 +14,9 @@ final class UpdateAdminAction
     public function handle(User $user, UpdateAdminPayload $payload)
     {
         $isOk = $user->update($payload->toArray());
-        $user = $user->refresh();
 
         return new MessageResponse(
-            AdminUserResource::loginData($user),
+            AdminUserResource::loginData($user->refresh()),
             status: 200,
             success: $isOk ?? false,
             message: 'Admin Updated Successfully'

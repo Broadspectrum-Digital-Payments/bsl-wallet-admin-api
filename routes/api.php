@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\NewAdminPasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,10 @@ use App\Http\Controllers\Auth\LoginController;
 Route::post('/login', LoginController::class)
     ->middleware('guest')
     ->name('login');
+
+Route::post('/verify-email-link', NewAdminPasswordResetController::class)
+    ->middleware('guest')
+    ->name('admin.veify');
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();

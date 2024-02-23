@@ -6,24 +6,28 @@ namespace App\Actions;
 
 use App\Response\MessageResponse;
 use App\Services\Auth\AuthService;
-use Illuminate\Support\Facades\Hash;
+use App\Services\Auth\PasswordResetService;
 use App\Http\Requests\Admin\CreateAdminRequest;
-use App\Http\Resources\Admin\AdminUserResource;
 
 final class CreateAdminAction
 {
-    public function __construct(private AuthService $authService)
-    {
+    public function __construct(
+        private AuthService $authService,
+        private PasswordResetService $resetService
+    ) {
     }
 
     public function handle(CreateAdminRequest $request)
     {
         $user = $this->authService->createUser(
-            $request->validated() + ['password' => Hash::make($request->password)]
+            $request->validated() + ['password' => ($token = bin2hex(random_bytes(24)))]
         );
 
-        return new MessageResponse(
-            AdminUserResource::loginData($user->refresh()),
+        $this->resetService->createPasswordData($user->email, $token);
+
+        $this->authService->sendNewAdminPasswordResetLink($user, $token);
+
+        return MessageResponse::success(
             status: 201,
             success: true,
             message: 'Admin Created Successfully'

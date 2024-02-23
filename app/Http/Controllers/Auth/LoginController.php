@@ -20,7 +20,7 @@ final class LoginController
         $token = $this->auhService->createAccessToken($user);
 
         return new MessageResponse(
-            data: ['bearerToken' => $token] + AdminUserResource::loginData($user),
+            data: $token + AdminUserResource::loginData($user),
             success: true,
             message: 'Login successful',
         );
