@@ -23,7 +23,7 @@ Route::post('/login', LoginController::class)
     ->middleware('guest')
     ->name('login');
 
-Route::post('/verify-email-link', NewAdminPasswordResetController::class)
+Route::post('/reset-password', NewAdminPasswordResetController::class)
     ->middleware('guest')
     ->name('admin.veify');
 

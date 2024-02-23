@@ -7,6 +7,7 @@ namespace App\Http\Requests\Admin;
 use App\Enums\UserType;
 use App\Enums\AdminStatus;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use App\Payloads\Admin\UpdateAdminPayload;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,10 +22,15 @@ class UpdateAdminRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', $this->unique()],
             'status' => ['nullable', 'string', Rule::enum(AdminStatus::class)],
             'userType' => ['nullable', 'string', Rule::enum(UserType::class)],
         ];
+    }
+
+    private function unique(): Unique
+    {
+        return Rule::unique('users')->ignore($this->route('externalId')->id);
     }
 
     public function payload(): UpdateAdminPayload
