@@ -8,11 +8,12 @@ use App\Enums\UserType;
 use App\Enums\AdminStatus;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
-use App\Payloads\Admin\UpdateAdminPayload;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Concerns\HasAdminMutationPayload;
 
 class UpdateAdminRequest extends FormRequest
 {
+    use HasAdminMutationPayload;
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,17 +32,5 @@ class UpdateAdminRequest extends FormRequest
     private function unique(): Unique
     {
         return Rule::unique('users')->ignore($this->route('externalId')->id);
-    }
-
-    public function payload(): UpdateAdminPayload
-    {
-        $validated = parent::validated();
-
-        return new UpdateAdminPayload(
-            name: $validated['name'],
-            email: $validated['email'],
-            status: $validated['status'] ?? null,
-            userType: $validated['userType'] ?? null
-        );
     }
 }

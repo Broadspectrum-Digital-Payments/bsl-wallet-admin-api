@@ -7,7 +7,7 @@ namespace App\Actions;
 use App\Response\MessageResponse;
 use App\Services\Auth\AuthService;
 use App\Services\Auth\PasswordResetService;
-use App\Http\Requests\Admin\CreateAdminRequest;
+use App\Payloads\Admin\AdminMutationPayload;
 
 final class CreateAdminAction
 {
@@ -17,10 +17,10 @@ final class CreateAdminAction
     ) {
     }
 
-    public function handle(CreateAdminRequest $request)
+    public function handle(AdminMutationPayload $payload)
     {
         $user = $this->authService->createUser(
-            $request->validated() + ['password' => ($token = bin2hex(random_bytes(24)))]
+            $payload->toArray() + ['password' => ($token = bin2hex(random_bytes(24)))]
         );
 
         $this->resetService->createPasswordData($user->email, $token);

@@ -33,7 +33,7 @@ class AdminController extends Controller
 
     public function create(CreateAdminRequest $request, CreateAdminAction $action)
     {
-        return Safenet::run(fn () => $action->handle($request));
+        return Safenet::run(fn () => $action->handle($request->payload()));
     }
 
     public function show(User $externalId)

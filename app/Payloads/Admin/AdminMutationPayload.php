@@ -8,7 +8,7 @@ use App\Enums\UserType;
 use App\Enums\AdminStatus;
 use App\Traits\KeyTransformer;
 
-final readonly class UpdateAdminPayload
+final readonly class AdminMutationPayload
 {
     use KeyTransformer;
 
