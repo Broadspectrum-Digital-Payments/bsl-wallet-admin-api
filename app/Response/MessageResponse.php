@@ -35,35 +35,21 @@ final class MessageResponse implements Responsable
         bool $success = true,
         string $message = 'Request completed succesfully'
     ) {
-        return new static($data, $status, $success, $message);
+        return static::buildResponse($data, $status, $success, $message);
     }
 
     public static function error(
+        array $data = [],
         int $status = 500,
         bool $success = false,
         string $message = 'Operation failed',
     ) {
-        return static::buildResponse([], $status, $success, $message);
-    }
-
-    public static function paginated(
-        $data,
-        int $status = 200,
-        bool $success = false,
-        string $message = 'Request completed succesfully',
-    ) {
-        $responseData = $data->response()->getData();
-
-        return static::buildResponse([
-            'data' => $data,
-            'links' => $responseData?->links,
-            'meta' => $responseData?->meta,
-        ], $status, $success, $message);
+        return static::buildResponse($data, $status, $success, $message);
     }
 
     private static function buildResponse(
-        $data,
-        $status,
+        array $data,
+        int $status,
         bool $success = false,
         string $message = 'Request completed succesfully',
         array $headers = []
@@ -71,6 +57,7 @@ final class MessageResponse implements Responsable
         return new JsonResponse([
             'success' => $success,
             'message' => $message,
-        ] + $data, $status, $headers);
+            ...$data
+        ], $status, $headers);
     }
 }

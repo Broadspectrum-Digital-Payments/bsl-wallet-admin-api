@@ -22,11 +22,14 @@ class AdminController extends Controller
         return Safenet::run(function () use ($request) {
             $perPage = $request?->perPage ?? 10;
 
-            $admins = User::paginate($perPage);
+            $admins = User::query()->latest()->paginate($perPage);
 
-            return MessageResponse::paginated(
-                AdminResource::collection($admins),
-                success: true
+            return MessageResponse::success(
+                [
+                    "data" => AdminResource::collection($admins),
+                    "meta" => getPaginatedData($admins, $perPage)
+                ],
+                success: true,
             );
         });
     }
