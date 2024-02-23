@@ -26,7 +26,7 @@ final readonly class UpdateAdminPayload
 
         if (is_string($this->status)) $data['status'] = AdminStatus::tryFrom($this->status);
         if (is_null($data['status'])) unset($data['status']);
-        if (is_string($this->userType)) $data['userType'] = AdminStatus::tryFrom($this->status);
+        if (is_string($this->userType)) $data['userType'] = UserType::tryFrom($this->userType);
         if (is_null($data['userType'])) unset($data['userType']);
 
         return $this->toSnakeCase($data);
