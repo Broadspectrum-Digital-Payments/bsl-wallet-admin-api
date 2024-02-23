@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Response\MessageResponse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -30,13 +31,20 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(AdminController::class)
-    ->middleware('auth:sanctum')
-    ->prefix('admins')
-    ->group(function () {
-        Route::get('/', 'index');
-        Route::get('/{externalId}', 'show');
-        Route::post('/', 'create');
-        Route::put('/{externalId}', 'update');
-        Route::delete('/{externalId}', 'destroy');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(AdminController::class)
+        ->prefix('admins')
+        ->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{externalId}', 'show');
+            Route::post('/', 'create');
+            Route::put('/{externalId}', 'update');
+            Route::delete('/{externalId}', 'destroy');
+        });
+
+    Route::post('/logout', function (Request $request) {
+        $request->user()->currentAccessToken()->delete();
+
+        return MessageResponse::success(success: 'Logout successful');
     });
+});
