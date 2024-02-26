@@ -19,9 +19,8 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         return Safenet::run(function () use ($request) {
-            $perPage = $request?->perPage ?? 10;
-
-            $admins = User::query()->latest()->paginate($perPage);
+            $admins = User::query()->latest()
+                ->paginate($perPage = $request->query('perPage', 10));
 
             return MessageResponse::success(
                 [

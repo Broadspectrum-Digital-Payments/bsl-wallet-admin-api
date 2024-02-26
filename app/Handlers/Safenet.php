@@ -9,7 +9,6 @@ use Throwable;
 use ErrorException;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -24,7 +23,7 @@ final class Safenet
         try {
             return $fn();
         } catch (\Throwable | QueryException $e) {
-            Log::error($e);
+            report($e);
 
             if ($e instanceof QueryException) {
                 return self::respond(static::toReadable($e->getMessage()));
